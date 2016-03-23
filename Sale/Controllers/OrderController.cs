@@ -19,9 +19,7 @@ namespace Sale.Controllers
             //ViewBag.CustId = order.CustId;
             //ViewBag.CustName = order.CustName;
 
-            ViewBag.Desc1 = "我是ViewBag";
-            ViewData["Desc2"] = "我是ViewData";
-            TempData["Desc3"] = "我是TempData";
+            
 
             return View();
         }
@@ -43,9 +41,15 @@ namespace Sale.Controllers
         [HttpPost()]
         public ActionResult InsertOrder(Models.Order order)
         {
-            Models.OrderService orderService = new Models.OrderService();
-            orderService.InsertOrder(order);
-            return View("Index");
+            //Models.OrderService orderService = new Models.OrderService();
+            //orderService.InsertOrder(order);
+            //return View("Index");
+
+            ViewBag.Desc1 = "我是ViewBag";
+            ViewData["Desc2"] = "我是ViewData";
+            TempData["Desc3"] = "我是TempData";
+
+            return RedirectToAction("Index");
         }
         [HttpGet()]
         public JsonResult TestJson()
