@@ -13,7 +13,7 @@ namespace Sale.Models
         /// <summary>
         /// 新增訂單
         /// </summary>
-        public void InsertOrder()
+        public void InsertOrder(Models.Order order)
         {
 
         }
@@ -21,7 +21,7 @@ namespace Sale.Models
         /// <summary>
         /// 刪除訂單
         /// </summary>
-        public void DeleteOrderById()
+        public void DeleteOrderById(String id)
         {
 
         }
@@ -29,7 +29,7 @@ namespace Sale.Models
         /// <summary>
         /// 更新訂單
         /// </summary>
-        public void UpdateOrder()
+        public void UpdateOrder(Models.Order order)
         {
 
         }

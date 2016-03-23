@@ -10,7 +10,7 @@ namespace Sale.Models
             /// <summary>
             /// 訂單編號
             /// </summary>
-            public int OrderDd { get; set; }
+            public int OrderId { get; set; }
 
             /// <summary>
             /// 客戶代號
