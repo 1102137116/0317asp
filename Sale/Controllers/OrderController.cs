@@ -14,13 +14,11 @@ namespace Sale.Controllers
         /// <returns></returns>
         public ActionResult Index()
         {
-            //Models.OrderService orderService = new Models.OrderService();
+            Models.OrderService orderService = new Models.OrderService();
             //var order = orderService.GetOrderById("111");
             //ViewBag.CustId = order.CustId;
             //ViewBag.CustName = order.CustName;
-
-            
-
+            ViewBag.Data = orderService.GetOrders();
             return View();
         }
 

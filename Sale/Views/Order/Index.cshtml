@@ -12,11 +12,23 @@
 </head>
 <body>
     <div>
-        @ViewBag.Desc1
-        <br/>
-        @ViewData["Desc2"]
-        <br />
-        @TempData["Desc3"]
+        <div>訂單編號</div>
+        <div>@Html.TextBox("textorderID")</div>
+        <table>
+            <tr>
+                <td>客戶代號</td>
+                <td>客戶名稱</td>
+                <td>負責員工</td>
+            </tr>
+            @foreach (var item in(List<Sale.Models.Order>)ViewBag.Data)
+            {
+                <tr>
+                    <td>@item.CustId</td>
+                    <td>@item.CustName</td>
+                    <td>@item.EmpName</td>
+                </tr>
+            }
+        </table>
     </div>
 </body>
 </html>
