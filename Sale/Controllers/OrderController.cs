@@ -12,14 +12,45 @@ namespace Sale.Controllers
         /// 訂單管理系統首頁
         /// </summary>
         /// <returns></returns>
+        Models.CodeService codeService = new Models.CodeService();
         public ActionResult Index()
         {
-            Models.OrderService orderService = new Models.OrderService();
+            /*List<SelectListItem> custData = new List<SelectListItem>();
+            SelectList selectList = new SelectList(this, "CustomerID", "ContactName");
+            ViewBag.SelectList = selectList;*/
+            //Models.OrderService orderService = new Models.OrderService();
+            /*var data =orderService.GetOrderById("10250");
+            ViewBag.data = data.CustId + "" + data.CustName;
+            return View();*/
+            //Models.OrderService orderService = new Models.OrderService();
             //var order = orderService.GetOrderById("111");
             //ViewBag.CustId = order.CustId;
             //ViewBag.CustName = order.CustName;
-            ViewBag.Data = orderService.GetOrders();
+            //ViewBag.Data = orderService.GetOrders();
+            //ViewBag.custData = custData;
+            ViewBag.EmpCodeData = this.codeService.GetEmp();
+            ViewBag.ShipCodeData = this.codeService.GetShipper();
             return View();
+        }
+        /// <summary>
+        /// 取得訂單查詢結果
+        /// </summary>
+        /// <param name="arg"></param>
+        /// <returns></returns>
+        [HttpPost()]
+        public ActionResult Index(Models.OrderSearchArg arg)
+        {
+            ViewBag.EmpCodeData = this.codeService.GetEmp();
+            Models.OrderService orderService = new Models.OrderService();
+            ViewBag.SearchResult = orderService.GetOrderByCondtioin(arg);
+
+            
+
+
+            /*Models.OrderService orderservice = new Models.OrderService();
+            Models.Order result = orderservice.GetOrderById(arg.OrderId);
+            ViewBag.result = result;*/
+            return View("Index");
         }
 
         /// <summary>
@@ -39,13 +70,9 @@ namespace Sale.Controllers
         [HttpPost()]
         public ActionResult InsertOrder(Models.Order order)
         {
-            //Models.OrderService orderService = new Models.OrderService();
-            //orderService.InsertOrder(order);
-            //return View("Index");
-
-            ViewBag.Desc1 = "我是ViewBag";
-            ViewData["Desc2"] = "我是ViewData";
-            TempData["Desc3"] = "我是TempData";
+            Models.OrderService orderService = new Models.OrderService();
+            orderService.InsertOrder(order);
+            return View("Index");
 
             return RedirectToAction("Index");
         }
