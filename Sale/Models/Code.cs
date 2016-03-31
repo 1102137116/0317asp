@@ -9,7 +9,5 @@ namespace Sale.Models
     {
         public string CodeId { get; set; }
         public string CodeName { get; set; }
-        public string ShCodeId { get; set; }
-        public string ShCodeName { get; set; }
     }
 }

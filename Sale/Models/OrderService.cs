@@ -50,9 +50,8 @@ namespace Sale.Models
         }
 
         /// <summary>
-        /// 取得訂單
+        /// 依照Id 取得訂單資料
         /// </summary>
-        /// <param name="id">訂單ID</param>
         /// <returns></returns>
         public Models.Order GetOrderById(int orderId)
         {
@@ -83,7 +82,7 @@ namespace Sale.Models
         }
 
         /// <summary>
-        /// 取得訂單
+        /// 依照條件取得訂單資料
         /// </summary>
         /// <returns></returns>
         public List<Models.Order> GetOrderByCondtioin(Models.OrderSearchArg arg)
@@ -100,16 +99,25 @@ namespace Sale.Models
 					INNER JOIN Sales.Customers As B ON A.CustomerID=B.CustomerID
 					INNER JOIN HR.Employees As C On A.EmployeeID=C.EmployeeID
 					inner JOIN Sales.Shippers As D ON A.ShipperID=D.ShipperID
-					Where (B.Companyname Like @CustName Or @CustName='') And 
-						  (A.Orderdate=@Orderdate Or @Orderdate='') ";
-
+					Where (B.Companyname Like @CustName Or @CustName='') AND 
+						  (A.OrderId=@OrderId Or @OrderId='') AND
+                          (A.EmployeeID=@EmployeeID Or @EmployeeID='') AND
+                          (A.ShipperID=@ShipperID Or @ShipperID='') AND
+                          (A.ShippedDate=@ShippedDate Or @ShippedDate='') AND
+						  (A.Orderdate=@Orderdate Or @Orderdate='')AND
+						  (A.RequireDdate=@RequireDdate Or @RequireDdate='')";
 
             using (SqlConnection conn = new SqlConnection(this.GetDBConnectionString()))
             {
                 conn.Open();
                 SqlCommand cmd = new SqlCommand(sql, conn);
                 cmd.Parameters.Add(new SqlParameter("@CustName", arg.CustName == null ? string.Empty : arg.CustName));
+                cmd.Parameters.Add(new SqlParameter("@OrderId", arg.OrderId == null ? default(int) : arg.OrderId));
+                cmd.Parameters.Add(new SqlParameter("@EmployeeID", arg.EmpId == null ? default(int) : arg.EmpId));
+                cmd.Parameters.Add(new SqlParameter("@ShipperID", arg.ShipperID == null ? default(int) : arg.ShipperID));
                 cmd.Parameters.Add(new SqlParameter("@Orderdate", arg.OrderDate == null ? string.Empty : arg.OrderDate));
+                cmd.Parameters.Add(new SqlParameter("@ShippedDate", arg.ShippedDate == null ? string.Empty : arg.ShippedDate));
+                cmd.Parameters.Add(new SqlParameter("@RequireDdate", arg.RequireDdate == null ? string.Empty : arg.RequireDdate));
                 SqlDataAdapter sqlAdapter = new SqlDataAdapter(cmd);
                 sqlAdapter.Fill(dt);
                 conn.Close();

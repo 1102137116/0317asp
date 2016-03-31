@@ -13,8 +13,6 @@
 </head>
 <body>
     <h1>查詢訂單</h1>
-    @*@<div>@Html.TextBox("textorderID")</div>
-        @Html.DropDownList("custData", (List<SelectListItem>)ViewBag.custData);*@
     @using (Html.BeginForm("Index", "Order", FormMethod.Post, new { id = "Form1" }))
     {
         <div id="SearchConditionSection">
@@ -33,25 +31,24 @@
                 </tr>
                 <tr>
                     <td>出貨公司</td>
-                    <td colspan="4">
-                    @Html.DropDownListFor(model => model.ShipperId, (List<SelectListItem>)ViewBag.ShipCodeData, "")</td>
+                    <td colspan="4">@Html.DropDownListFor(model => model.ShipperID, (List<SelectListItem>)ViewBag.ShipCodeData, "")</td>
                 </tr>
                 <tr>
                     <td>訂購日期</td>
-                    <td><input type="date" id="bookdate"></td>
+                    <td>@Html.TextBoxFor(model => model.OrderDate, new { @type = "date" })</td>
                     <td>出貨日期</td>
-                    <td><input type="date" id="deliverydate"></td>
+                    <td>@Html.TextBoxFor(model => model.ShippedDate, new { @type = "date" })</td>
                 </tr>
                 <tr>
                     <td>需要日期</td>
-                    <td colspan="4"><input type="date" id="demanddate"></td>
+                    <td colspan="4">@Html.TextBoxFor(model => model.RequireDdate, new { @type = "date" })</td>
                 </tr>
                 <tr>
                     <td></td>
                     <td colspan="4">
                         <input type="submit" value="查詢" />
                         <input type="button" value="刪除" />
-                        <input type="button" id="add" value="新增訂單" />
+                        <input type="button" value="新增訂單" />
                     </td>
                 </tr>
             </table>
@@ -59,10 +56,11 @@
 
         <div id="Search">
 
-
+            <br>
+            <br>
             @if (ViewBag.SearchResult != null)
             {
-                <table class="table table-bordered table-striped">
+                <table class="table table-bordered table-striped" border="1">
                     <tr>
                         <td>訂單編號</td>
                         <td>客戶名稱</td>

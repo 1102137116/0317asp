@@ -13,6 +13,7 @@ namespace Sale.Controllers
         /// </summary>
         /// <returns></returns>
         Models.CodeService codeService = new Models.CodeService();
+
         public ActionResult Index()
         {
             /*List<SelectListItem> custData = new List<SelectListItem>();
@@ -32,6 +33,7 @@ namespace Sale.Controllers
             ViewBag.ShipCodeData = this.codeService.GetShipper();
             return View();
         }
+
         /// <summary>
         /// 取得訂單查詢結果
         /// </summary>
@@ -44,12 +46,13 @@ namespace Sale.Controllers
             Models.OrderService orderService = new Models.OrderService();
             ViewBag.SearchResult = orderService.GetOrderByCondtioin(arg);
 
-            
+            ViewBag.ShipCodeData = this.codeService.GetShipper();
+            Models.OrderService shipService = new Models.OrderService();
+            ViewBag.SearchResult = shipService.GetOrderByCondtioin(arg);
 
-
-            /*Models.OrderService orderservice = new Models.OrderService();
+            Models.OrderService orderservice = new Models.OrderService();
             Models.Order result = orderservice.GetOrderById(arg.OrderId);
-            ViewBag.result = result;*/
+            ViewBag.result = result;
             return View("Index");
         }
 

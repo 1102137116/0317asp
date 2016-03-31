@@ -108,8 +108,6 @@ namespace Sale.Models
         private List<SelectListItem> MapCodeData(DataTable dt)
         {
             List<SelectListItem> result = new List<SelectListItem>();
-
-
             foreach (DataRow row in dt.Rows)
             {
                 result.Add(new SelectListItem()
