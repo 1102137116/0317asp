@@ -88,7 +88,7 @@ namespace Sale.Models
         public List<SelectListItem> GetCustomer()
         {
             DataTable dt = new DataTable();
-            string sql = @"Select CustId As CodeId,CompanyName As CodeName FROM Sales.Customers";
+            string sql = @"Select CustomerID As CodeId,CompanyName As CodeName FROM Sales.Customers";
             using (SqlConnection conn = new SqlConnection(this.GetDBConnectionString()))
             {
                 conn.Open();

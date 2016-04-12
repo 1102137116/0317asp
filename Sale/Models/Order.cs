@@ -45,7 +45,7 @@ namespace Sale.Models
         /// <summary>
         /// 業務(員工)代號
         /// </summary>
-        [DisplayName("負責員工編號")]
+        [DisplayName("負責員工代號")]
         public int EmpId { get; set; }
 
         /// <summary>

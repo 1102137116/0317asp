@@ -10,12 +10,15 @@
 <head>
     <meta name="viewport" content="width=device-width" />
     <title>Index</title>
+    <script src="~/Scripts/jquery-1.10.2.min.js"></script>
+    <script src="~/Scripts/bootstrap.min.js"></script>
+    <link href="~/Content/bootstrap.min.css" rel="stylesheet" />
 </head>
 <body>
     <h1>查詢訂單</h1>
     @using (Html.BeginForm("Index", "Order", FormMethod.Post, new { id = "Form1" }))
     {
-        <div id="SearchConditionSection">
+        <div id="SearchConditionSection" class="container">
             <table border="1">
                 <tr>
                     <td>訂單編號</td>
@@ -48,7 +51,7 @@
                     <td colspan="4">
                         <input type="submit" value="查詢" />
                         <input type="button" value="刪除" />
-                        <input type="button" value="新增訂單" />
+                        @Html.ActionLink("新增訂單", "InsertOrder")
                     </td>
                 </tr>
             </table>

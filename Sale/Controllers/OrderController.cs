@@ -60,33 +60,73 @@ namespace Sale.Controllers
         /// 新增訂單的畫面
         /// </summary>
         /// <returns></returns>
+        [HttpGet()]
         public ActionResult InsertOrder()
         {
-            return View();
+            ViewBag.CustCodeData = this.codeService.GetCustomer();
+            ViewBag.EmpCodeData = this.codeService.GetEmp();
+            ViewBag.ShipCodeData = this.codeService.GetShipper();
+            ViewBag.ProductCodeData = this.codeService.GetProduct();
+            return View(new Models.Order());
         }
 
         /// <summary>
-        /// 新增訂單存檔的Action
+        /// 新增訂單
         /// </summary>
         /// <param name="order"></param>
         /// <returns></returns>
         [HttpPost()]
         public ActionResult InsertOrder(Models.Order order)
         {
-            Models.OrderService orderService = new Models.OrderService();
-            orderService.InsertOrder(order);
-            return View("Index");
-
-            return RedirectToAction("Index");
+            if (ModelState.IsValid)
+            {
+                return RedirectToAction("Index");
+            }
+            
+            return View(order);
+            //return View();
         }
+
+        /// <summary>
+        /// 更新訂單畫面
+        /// </summary>
+        /// <returns></returns>
         [HttpGet()]
-        public JsonResult TestJson()
+        public ActionResult UpdateOrder()
         {
-            //var result = new Models.Order();
-            //result.CustId = "123";
-            //result.CustName = "abc";
-            var result = new Models.Order() { CustId = "123", CustName = "abc" };
-            return this.Json(result, JsonRequestBehavior.AllowGet);
+            return View();
+        }
+
+        /// <summary>
+        /// 更新訂單
+        /// </summary>
+        /// <returns></returns>
+        [HttpPost]
+        public ActionResult UpdateOrder(Models.Order order)
+        {
+            return View();
+        }
+
+
+        /// <summary>
+        /// 刪除訂單
+        /// </summary>
+        /// <param name="orderId"></param>
+        /// <returns></returns>
+        [HttpPost()]
+        public JsonResult DeleteOrder(string orderId)
+        {
+            try
+            {
+                Models.OrderService orderService = new Models.OrderService();
+                orderService.DeleteOrderById(orderId);
+                return this.Json(true);
+            }
+            catch (Exception)
+            {
+
+                return this.Json(false);
+            }
         }
     }
 }

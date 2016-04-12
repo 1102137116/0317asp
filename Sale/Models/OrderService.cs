@@ -28,9 +28,46 @@ namespace Sale.Models
         /// <summary>
         /// 新增訂單
         /// </summary>
-        public void InsertOrder(Models.Order order)
+        /// <param name="order"></param>
+        /// <returns>訂單編號</returns>
+        public int InsertOrder(Models.Order order)
         {
+            String sql = @" Insert INTO Sales.Orders
+						 (
+							CustomerID,EmployeeID,OrderDate,RequiredDate,ShippedDate,ShipperID,Freight,
+							ShipName,ShipAddress,ShipCity,ShipRegion,ShipPostalCode,ShipCountry
+						)
+						VALUES
+						(
+							@CustId,@EmpId,@Orderdate,@RequireDdate,@ShippedDate,@ShipperId,@Freight,
+							@ShipperName,@ShipAddress,@ShipCity,@ShipRegion,@ShipPostalCode,@ShipCountry
+						)
+						Select SCOPE_IDENTITY()
+						";
+			int orderId;
+			using (SqlConnection conn = new SqlConnection(this.GetDBConnectionString()))
+			{
+				conn.Open();
+				SqlCommand cmd = new SqlCommand(sql, conn);
+                cmd.Parameters.Add(new SqlParameter("@CustId", order.CustId));
+                cmd.Parameters.Add(new SqlParameter("@EmpId", order.EmpId));
+                cmd.Parameters.Add(new SqlParameter("@Orderdate", order.Orderdate));
+                cmd.Parameters.Add(new SqlParameter("@RequireDdate", order.RequireDdate));
+                cmd.Parameters.Add(new SqlParameter("@ShippedDate", order.ShippedDate));
+                cmd.Parameters.Add(new SqlParameter("@ShipperId", order.ShipperId));
+                cmd.Parameters.Add(new SqlParameter("@Freight", order.Freight));
+                cmd.Parameters.Add(new SqlParameter("@ShipperName", order.ShipperName));
+                cmd.Parameters.Add(new SqlParameter("@ShipAddress", order.ShipAddress));
+                cmd.Parameters.Add(new SqlParameter("@ShipCity", order.ShipCity));
+                cmd.Parameters.Add(new SqlParameter("@ShipRegion", order.ShipRegion));
+                cmd.Parameters.Add(new SqlParameter("@ShipPostalCode", order.ShipPostalCode));
+                cmd.Parameters.Add(new SqlParameter("@ShipCountry", order.ShipCountry));
 
+				orderId=(int)cmd.ExecuteScalar();
+				conn.Close();
+			}
+			return orderId;
+            
         }
 
         /// <summary>
