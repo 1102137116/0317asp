@@ -1,9 +1,11 @@
 ﻿@model Sale.Models.Order
 
 @{
-    Layout = null;
+    ViewBag.Title = "InsertOrder";
+    Layout = "~/Views/Shared/_Layout.cshtml";
 }
-<h2>新增訂單</h2>
+
+<h1>新增訂單</h1>
 @using (Html.BeginForm())
 {
     @Html.AntiForgeryToken()
@@ -139,7 +141,6 @@
             }
         </tbody>
     </table>
-
 }
 @section scripts{
     <script type="text/javascript">
@@ -148,6 +149,7 @@
 
         //新增一列名資料
         $("#addNewDetial").click(function (e) {
+            console.log("add");
             $('#tbContent').append('<tr>' + trtemplate + '</tr>');
         });
 

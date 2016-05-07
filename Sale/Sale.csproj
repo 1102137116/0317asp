@@ -173,6 +173,7 @@
     <Compile Include="Models\ManageViewModels.cs" />
     <Compile Include="Models\Order.cs" />
     <Compile Include="Models\OrderDetails.cs" />
+    <Compile Include="Models\OrderDetailService.cs" />
     <Compile Include="Models\OrderSearchArg.cs" />
     <Compile Include="Models\OrderService.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
@@ -249,6 +250,8 @@
     <Content Include="Views\_LayoutPage1.cshtml" />
     <Content Include="Views\LayoutTest\Index.cshtml" />
     <Content Include="Views\Shared\_SysDatePartial.cshtml" />
+    <Content Include="Views\Order\UpdateOrder.cshtml" />
+    <Content Include="Views\Order\index2.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

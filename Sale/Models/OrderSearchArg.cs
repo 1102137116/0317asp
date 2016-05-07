@@ -7,7 +7,7 @@ namespace Sale.Models
 {
     public class OrderSearchArg
     {
-        public int OrderId { get; set; }
+        public string OrderId { get; set; }
         public string CustName { get; set; }
         public string OrderDate { get; set; }
         public int EmpId { get; set; }

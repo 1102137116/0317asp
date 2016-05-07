@@ -13,24 +13,12 @@ namespace Sale.Controllers
         /// </summary>
         /// <returns></returns>
         Models.CodeService codeService = new Models.CodeService();
-
+        Models.OrderService orderService = new Models.OrderService();
+        Models.OrderDetailService orderdetailService = new Models.OrderDetailService();
         public ActionResult Index()
         {
-            /*List<SelectListItem> custData = new List<SelectListItem>();
-            SelectList selectList = new SelectList(this, "CustomerID", "ContactName");
-            ViewBag.SelectList = selectList;*/
-            //Models.OrderService orderService = new Models.OrderService();
-            /*var data =orderService.GetOrderById("10250");
-            ViewBag.data = data.CustId + "" + data.CustName;
-            return View();*/
-            //Models.OrderService orderService = new Models.OrderService();
-            //var order = orderService.GetOrderById("111");
-            //ViewBag.CustId = order.CustId;
-            //ViewBag.CustName = order.CustName;
-            //ViewBag.Data = orderService.GetOrders();
-            //ViewBag.custData = custData;
-            ViewBag.EmpCodeData = this.codeService.GetEmp();
-            ViewBag.ShipCodeData = this.codeService.GetShipper();
+            ViewBag.EmpCodeData = this.codeService.GetEmp(-1);
+            ViewBag.ShipCodeData = this.codeService.GetShipper(-1);
             return View();
         }
 
@@ -42,17 +30,12 @@ namespace Sale.Controllers
         [HttpPost()]
         public ActionResult Index(Models.OrderSearchArg arg)
         {
-            ViewBag.EmpCodeData = this.codeService.GetEmp();
+            ViewBag.EmpCodeData = this.codeService.GetEmp(-1);
             Models.OrderService orderService = new Models.OrderService();
             ViewBag.SearchResult = orderService.GetOrderByCondtioin(arg);
 
-            ViewBag.ShipCodeData = this.codeService.GetShipper();
-            Models.OrderService shipService = new Models.OrderService();
-            ViewBag.SearchResult = shipService.GetOrderByCondtioin(arg);
-
-            Models.OrderService orderservice = new Models.OrderService();
-            Models.Order result = orderservice.GetOrderById(arg.OrderId);
-            ViewBag.result = result;
+            ViewBag.ShipCodeData = this.codeService.GetShipper(-1);
+            
             return View("Index");
         }
 
@@ -63,9 +46,9 @@ namespace Sale.Controllers
         [HttpGet()]
         public ActionResult InsertOrder()
         {
-            ViewBag.CustCodeData = this.codeService.GetCustomer();
-            ViewBag.EmpCodeData = this.codeService.GetEmp();
-            ViewBag.ShipCodeData = this.codeService.GetShipper();
+            ViewBag.CustCodeData = this.codeService.GetCustomer(-1);
+            ViewBag.EmpCodeData = this.codeService.GetEmp(-1);
+            ViewBag.ShipCodeData = this.codeService.GetShipper(-1);
             ViewBag.ProductCodeData = this.codeService.GetProduct();
             return View(new Models.Order());
         }
@@ -80,6 +63,8 @@ namespace Sale.Controllers
         {
             if (ModelState.IsValid)
             {
+                Models.OrderService orderService = new Models.OrderService();
+                orderService.InsertOrder(order);
                 return RedirectToAction("Index");
             }
             
@@ -92,10 +77,19 @@ namespace Sale.Controllers
         /// </summary>
         /// <returns></returns>
         [HttpGet()]
-        public ActionResult UpdateOrder()
-        {
-            return View();
-        }
+        public ActionResult UpdateOrder(string id)
+          {
+              Models.Order order = this.orderService.GetOrderById(id);
+              ViewBag.OrderData = orderService.GetOrderById(id);
+              ViewBag.CustCodeData = this.codeService.GetCustomer(Convert.ToInt32(order.CustId));
+              ViewBag.EmpCodeData = this.codeService.GetEmp(Convert.ToInt32(order.EmpId));
+              ViewBag.ShipCodeData = this.codeService.GetShipper(Convert.ToInt32(order.ShipperId));
+              ViewBag.OrderDate = string.Format("{0:yyyy-MM-dd}", order.Orderdate);
+              ViewBag.RequireDdate = string.Format("{0:yyyy-MM-dd}", order.RequireDdate);
+              ViewBag.ShippedDate = string.Format("{0:yyyy-MM-dd}", order.ShippedDate);
+              ViewBag.OrderData = order;
+              return View(new Models.Order()); 
+          }
 
         /// <summary>
         /// 更新訂單
@@ -104,7 +98,11 @@ namespace Sale.Controllers
         [HttpPost]
         public ActionResult UpdateOrder(Models.Order order)
         {
-            return View();
+            Models.OrderService orderService = new Models.OrderService();
+            ViewBag.EmpCodeData = this.codeService.GetEmp(-1);
+            ViewBag.ShipCodeData = this.codeService.GetShipper(-1);
+            orderService.UpdateOrder(order);
+            return View("Index");
         }
 
 
@@ -128,5 +126,7 @@ namespace Sale.Controllers
                 return this.Json(false);
             }
         }
+        public ActionResult index2()
+        { return View(); }
     }
 }
