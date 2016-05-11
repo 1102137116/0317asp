@@ -133,8 +133,8 @@
             {
                 <tr>
                     <td>@Html.DropDownListFor(m => Model.OrderDetails[i].ProductId, (List<SelectListItem>)ViewBag.ProductCodeData, new { @class = "ProductId" })</td>
-                    <td>@Html.TextBoxFor(m => Model.OrderDetails[i].UnitPrice, new { @class = "UnitPrice" })</td>
-                    <td>@Html.TextBoxFor(m => Model.OrderDetails[i].Qty, new { @class = "Qty" })</td>
+                    <td>@Html.TextBoxFor(m => Model.OrderDetails[i].UnitPrice, new { @class = "UnitPrice", @onchange = "onchangeValue(this)", Type = "number" })</td>
+                    <td>@Html.TextBoxFor(m => Model.OrderDetails[i].Qty, new { @class = "Qty", @onchange = "onchangeValue(this)", Type = "number" })</td>
                     <td></td>
                     <td><button type="button" class="btnRemove">取消</button></td>
                 </tr>

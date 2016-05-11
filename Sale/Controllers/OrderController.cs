@@ -64,8 +64,9 @@ namespace Sale.Controllers
             if (ModelState.IsValid)
             {
                 Models.OrderService orderService = new Models.OrderService();
-                orderService.InsertOrder(order);
-                return RedirectToAction("Index");
+                int insert=orderService.InsertOrder(order);
+                orderdetailService.InsertOrderDetail(order.OrderDetails, insert);
+                return RedirectToAction("Index/" + insert);
             }
             
             return View(order);
