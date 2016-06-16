@@ -41,7 +41,7 @@ namespace Sale.Models
 						)
 						Select SCOPE_IDENTITY()
 						";
-                int result;
+                
                 using (SqlConnection conn = new SqlConnection(this.GetDBConnectionString()))
                 {
                     conn.Open();
@@ -52,7 +52,8 @@ namespace Sale.Models
                     cmd.Parameters.Add(new SqlParameter("@Qty", row.Qty));
                     cmd.Parameters.Add(new SqlParameter("@Discount", row.Discount));
 
-                    result = Convert.ToInt32(cmd.ExecuteScalar());
+                    //result = Convert.ToInt32(cmd.ExecuteScalar());
+                    cmd.ExecuteNonQuery();
                     conn.Close();
                 }
             }    

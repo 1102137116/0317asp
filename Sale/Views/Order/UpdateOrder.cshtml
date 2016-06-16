@@ -128,18 +128,76 @@
             </tr>
             <tbody id="tbContent">
 
-                @for (int i = 0; i < Model.OrderDetails.Count; i++)
+                @foreach (var item in (Model.OrderDetails))
                 {
                     <tr>
-                        <td>@Html.DropDownListFor(m => Model.OrderDetails[i].ProductId, (List<SelectListItem>)ViewBag.ProductCodeData, new { @class = "ProductId" })</td>
-                        <td>@Html.TextBoxFor(m => Model.OrderDetails[i].UnitPrice, new { @class = "UnitPrice", @onchange = "onchangeValue(this)", Type = "number" })</td>
-                        <td>@Html.TextBoxFor(m => Model.OrderDetails[i].Qty, new { @class = "Qty", @onchange = "onchangeValue(this)", Type = "number" })</td>
-                        <td></td>
-                        <td>@Html.TextBoxFor(m => Model.OrderDetails[0].ProductName, new { @class = "ProductName", @type = "hidden", @Value = "" })
-                        <button type="button" class="btnRemove">刪除</button></td>
+                        <td>@Html.TextBoxFor(m => Model.OrderDetails[0].ProductName, new { @class = "ProductName", @Value = item.ProductName, @readonly = true })</td>
+                        <td>@Html.TextBoxFor(m => Model.OrderDetails[0].UnitPrice, new { @class = "UnitPrice", @Value = item.UnitPrice, @onchange = "onchangeValue(this)", Type = "number" })</td>
+                        <td>@Html.TextBoxFor(m => Model.OrderDetails[0].Qty, new { @class = "Qty", @Value = item.Qty, @onchange = "onchangeValue(this)", Type = "number" })</td>
+                        <td>@Math.Round(@item.UnitPrice * @item.Qty)</td>
+                        <td>
+                            <button type="button" class="btnOrderDetailRemove" value=@item.ProductId>刪除</button>
+                            <input class="hidOrderId" type="hidden" value='@item.OrderId' />
+                            @Html.TextBoxFor(m => Model.OrderDetails[0].ProductId, new { @class = "ProductId", @Value = item.ProductId, @type = "hidden" })
+                        </td>
                     </tr>
                 }
             </tbody>
         </table>
     </div>
+}
+@section scripts{
+    <script type="text/javascript">
+        //當數量、單價改變時 重算小計
+        function onchangeValue(e) {
+            var price = e.parentNode.parentNode.childNodes[3].childNodes[0].value;
+            var qty = e.parentNode.parentNode.childNodes[5].childNodes[0].value;
+            var subtotal = e.parentNode.parentNode.childNodes[7];
+            subtotal.innerHTML = price * qty;
+        }
+
+        //明細資料範本
+        var trtemplate = $('#trtemplate tr').eq(0).html();
+
+        //新增一列名資料
+        $("#addNewDetial").click(function (e) {
+            $('#tbContent').append('<tr>' + trtemplate + '</tr>');
+        });
+
+        //移除OrderDetail + TR
+        $('#tbContent').on('click', '.btnOrderDetailRemove', function (e) {
+            if ($('#tbContent tr').length > 1) {
+                console.log($(this).val());
+                var tr = $(this).closest('tr')
+                $.ajax({
+                    type: "POST",
+                    url: "/Order/DeleteOrderDetail",
+                    data: {
+                        orderId: $(this).next().val(),
+                        productId: $(this).val()
+                    },
+                    dataType: "json",
+                    success: function (response) {
+                        $(tr).remove();
+                    }
+                });
+                return false;
+            }
+        });
+
+        //移除TR
+        $('#tbContent').on('click', '.btnRemove', function () {
+            if ($('#tbContent tr').length > 1)
+                $(this).closest('tr').remove();
+        });
+
+        //表單送出前置換element name 讓Action 可以讀到OrderDetials
+        $('form').submit(function () {
+            for (var i = 0 ; i < $('#tbContent tr').length; i++) {
+                $('.ProductId').eq(i).attr('name', 'OrderDetails[' + i + '].ProductId');
+                $('.Qty').eq(i).attr('name', 'OrderDetails[' + i + '].Qty');
+                $('.UnitPrice').eq(i).attr('name', 'OrderDetails[' + i + '].UnitPrice');
+            }
+        });
+    </script>
 }
